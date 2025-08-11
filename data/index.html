@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Gateway</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef2f3;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #2b7a0b;
+    }
+    .card {
+      display: inline-block;
+      background: white;
+      padding: 20px;
+      margin: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 200px;
+    }
+    .value {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Моніторинг теплиці</h1>
+
+  <div id="data">
+    <div class="card">
+      <h3>Вологість ґрунту</h3>
+      <div id="soil" class="value">-- %</div>
+    </div>
+    <div class="card">
+      <h3>Рівень води</h3>
+      <div id="hall" class="value">-- %</div>
+    </div>
+    <div class="card">
+      <h3>Температура</h3>
+      <div id="temp" class="value">-- °C</div>
+    </div>
+    <div class="card">
+      <h3>Вологість повітря</h3>
+      <div id="humidity" class="value">-- %</div>
+    </div>
+    <div class="card">
+      <h3>Освітленість</h3>
+      <div id="light" class="value">-- %</div>
+    </div>
+  </div>
+
+  <script>
+
+function updateData() {
+  fetch('/data')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('soil').textContent = data.soilLevel + ' %';
+      document.getElementById('hall').textContent = data.hallLevel + ' %';
+      document.getElementById('temp').textContent = data.temp_c + ' °C';
+      document.getElementById('humidity').textContent = data.humidity + ' %';
+      document.getElementById('light').textContent = data.light + ' %';
+    })
+    .catch(console.error);
+}
+
+// Оновлюємо кожні 3 секунди
+setInterval(updateData, 3000);
+updateData();
+
+  </script>
+</body>
+</html>
